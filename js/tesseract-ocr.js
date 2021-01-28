@@ -17,7 +17,7 @@ $( document ).ready(function() {
 				fileName = e.target.value.split( '\\' ).pop();
 
 			if( fileName ){
-				label.querySelector( 'span' ).innerHTML = fileName;
+				label.querySelector( 'span' ).innerHTML += fileName;
 
 				let reader = new FileReader();
 				reader.onload = function () {
@@ -113,14 +113,77 @@ function recognizeFile(file){
 
 	worker.recognize(file,
 		$("#langsel").val()
-	)
-		.progress(function(packet){
-			console.info(packet)
-			progressUpdate(packet)
+	).progress(function(packet){
+		console.info(packet)
+		percen = packet.progress * 100; 
+		console.log(percen)
+		document.getElementById('percenprogress').innerHTML = packet.status.toUpperCase();
+		if(packet.status == 'recognizing text'){
+			document.getElementById('percenprogress').innerHTML = 'Progress convert to text <b>' +percen.toFixed(0) + '%</b>';
+			if(percen.toFixed(0) >= 100){
+				document.getElementById('idTable').style.display = 'block'
+			}
+		}
+		progressUpdate(packet)
 
-		})
-		.then(function(data){
-			console.log(data)
-			progressUpdate({ status: 'done', data: data })
-		})
+	})
+	.then(function(data){
+		console.log(data)
+		var replaceAbsurd = data.text.replace("=", "").replace("%", "").replace("~", "").replace("©", "").replace("o", "").replace("_", "").replace("——", "").replace("—", "");
+		var replaceAbsurd1 = replaceAbsurd.replace("— ", "");
+		var replaceAbsurd2 = replaceAbsurd1.replace("~~", "");
+		var replaceAbsurd3 = replaceAbsurd2.replace("- ", "");
+		var replaceEnter = replaceAbsurd3.replace(/\n{1,}/g, '\n');
+		var replaceNIK = replaceEnter.replace("NIK", "");
+		var replaceNama = replaceNIK.replace("Nama", "");
+		var replaceTtl = replaceNama.replace("Tempat/Tgl Lahir", "");
+		var replaceJK = replaceTtl.replace("Jenis kelamin", "");
+		var replaceAlamat = replaceJK.replace("Alamat", "");
+		var replaceAgama = replaceAlamat.replace("Agama", "");
+		var replaceStatus = replaceAgama.replace("Status Perkawinan", "");
+		var replacePekerjaan = replaceStatus.replace("Pekerjaan", "");
+		var trim = replacePekerjaan.trim();
+		var array = trim.split('\n')
+		console.log(trim)
+		console.log(array)
+		var provinsi = array[0].trim();
+		var kabupaten = array[1].trim();
+		var nikReplace = array[2].replace(":", "");
+		var nik = nikReplace.trim();
+		var namaReplace = array[3].replace(":", "");
+		var nama = namaReplace.trim();
+		var ttlReplace = array[4].replace(":", "");
+		var ttl = ttlReplace.trim();
+		var jktReplace = array[5].replace(":", "");
+		var jk = jktReplace.trim();
+		var alamatReplace = array[6].replace(":", "");
+		var alamat = alamatReplace.trim();
+		var rtRWReplace = array[7].replace(":", "");
+		var rtRW = rtRWReplace.trim();
+		var desaReplace = array[8].replace(":", "");
+		var desa = desaReplace.trim();
+		var kecReplace = array[9].replace(":", "");
+		var kec = kecReplace.trim();
+		var agamaReplace = array[10].replace(":", "");
+		var agama = agamaReplace.trim();
+		var statusReplace = array[11].replace(":", "");
+		var status = statusReplace.trim();
+		var pekerjaanReplace = array[12].replace(":", "");
+		var pekerjaan = pekerjaanReplace.trim();
+
+		document.getElementById('provinsi').innerHTML = provinsi;
+		document.getElementById('kabupaten').innerHTML = kabupaten;
+		document.getElementById('nik').innerHTML = nik;
+		document.getElementById('nama').innerHTML = nama;
+		document.getElementById('ttl').innerHTML = ttl;
+		document.getElementById('jk').innerHTML = jk;
+		document.getElementById('alamat').innerHTML = alamat;
+		document.getElementById('rtRW').innerHTML = rtRW;
+		document.getElementById('desa').innerHTML = desa;
+		document.getElementById('kec').innerHTML = kec;
+		document.getElementById('agama').innerHTML = agama;
+		document.getElementById('status').innerHTML = status;
+		document.getElementById('pekerjaan').innerHTML = pekerjaan;
+		progressUpdate({ status: 'done', data: data })
+	})
 }

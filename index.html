@@ -9,6 +9,11 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://kit.fontawesome.com/4414288e8e.js"></script>
 	<script src='js/tesseract.min.js'></script>
+	<style>
+		valignTop{
+			vertical-align: top;
+		}
+	</style>
 </head>
   <body>
       <main>
@@ -24,6 +29,66 @@
 			  <div class="row">
 				  <div class="col-12 col-md-5" id='showImage' style='display:none'>
 					<div class="image-container"><img id="selected-image"  src="images/Funny-Minion-Quotes.jpg" class="col-12 p-0" /></div>
+					<span id="percenprogress" class="label label-warning"></span>
+					<div id="idTable" style="display: none;">
+						<table border="0" style="width:100%">
+							<tr>
+								<td style="width:40%; vertical-align: top;">Provinsi</td>
+								<td style="width:1%; vertical-align: top;">:</td>
+								<td style="width:59%; vertical-align: top;"><b id='provinsi'></b></td>
+							</tr>
+							<tr>
+								<td class="valignTop">Kabupaten</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop"><b id='kabupaten'></b></td>
+							</tr>
+							<tr>
+								<td class="valignTop">NIK</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop"><b id='nik'></b></td>
+							</tr>
+							<tr>
+								<td class="valignTop">Nama</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop"><b id='nama'></b></td>
+							</tr>
+							<tr>
+								<td class="valignTop">Tempat/Tanggal Lahir</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop"><b id='ttl'></b></td>
+							</tr>
+							<tr>
+								<td class="valignTop">Jenis Kelamin</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop"><b id='jk'></b></td>
+							</tr>
+							<tr>
+								<td class="valignTop">Alamat</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop">
+									<b id='alamat'></b>
+									<b id='rtRW'></b>
+									<b id='desa'></b>
+									<b id='kec'></b>
+								</td>
+							</tr>
+							<tr>
+								<td class="valignTop">Agama</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop"><b id='agama'></b></td>
+							</tr>
+							<tr>
+								<td class="valignTop">Status Kawin</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop"><b id='status'></b></td>
+							</tr>
+							<tr>
+								<td class="valignTop">Pekerjaan</td>
+								<td class="valignTop">:</td>
+								<td class="valignTop"><b id='pekerjaan'></b></td>
+							</tr>
+						</table>
+					</div>
 				  </div>
 				  <div class="col-12 col-md-1" id='showArrow' style='display:none'>
 					<i id="arrow-right" class="fas fa-arrow-right d-none d-md-block"></i>
