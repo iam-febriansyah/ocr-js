@@ -38,54 +38,54 @@
 								<td style="width:59%; vertical-align: top;"><b id='provinsi'></b></td>
 							</tr>
 							<tr>
-								<td class="valignTop">Kabupaten</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop"><b id='kabupaten'></b></td>
+								<td class="valignTop" valign="top">Kabupaten</td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top"><b id='kabupaten'></b></td>
 							</tr>
 							<tr>
-								<td class="valignTop">NIK</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop"><b id='nik'></b></td>
+								<td class="valignTop" valign="top">NIK</td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top"><b id='nik'></b></td>
 							</tr>
 							<tr>
 								<td class="valignTop">Nama</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop"><b id='nama'></b></td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top"><b id='nama'></b></td>
 							</tr>
 							<tr>
-								<td class="valignTop">Tempat/Tanggal Lahir</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop"><b id='ttl'></b></td>
+								<td class="valignTop" valign="top">Tempat/Tanggal Lahir</td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top"><b id='ttl'></b></td>
 							</tr>
 							<tr>
-								<td class="valignTop">Jenis Kelamin</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop"><b id='jk'></b></td>
+								<td class="valignTop" valign="top">Jenis Kelamin</td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top"><b id='jk'></b></td>
 							</tr>
 							<tr>
-								<td class="valignTop">Alamat</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop">
-									<b id='alamat'></b>
-									<b id='rtRW'></b>
-									<b id='desa'></b>
+								<td class="valignTop" valign="top">Alamat</td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top">
+									<b id='alamat'></b><br>
+									<b id='rtRW'></b><br>
+									<b id='desa'></b><br>
 									<b id='kec'></b>
 								</td>
 							</tr>
 							<tr>
-								<td class="valignTop">Agama</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop"><b id='agama'></b></td>
+								<td class="valignTop" valign="top">Agama</td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top"><b id='agama'></b></td>
 							</tr>
 							<tr>
-								<td class="valignTop">Status Kawin</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop"><b id='status'></b></td>
+								<td class="valignTop" valign="top">Status Kawin</td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top"><b id='status'></b></td>
 							</tr>
 							<tr>
-								<td class="valignTop">Pekerjaan</td>
-								<td class="valignTop">:</td>
-								<td class="valignTop"><b id='pekerjaan'></b></td>
+								<td class="valignTop" valign="top">Pekerjaan</td>
+								<td class="valignTop" valign="top">:</td>
+								<td class="valignTop" valign="top"><b id='pekerjaan'></b></td>
 							</tr>
 						</table>
 					</div>
@@ -105,5 +105,23 @@
 		</div>
 	  </main>
 	  <script src="js/tesseract-ocr.js"></script>
+	  <script>
+		  	function replaceText(){
+				const replacements = {
+					'’': "'",
+					'“': '"',
+					'”': '"',
+					'—': '---',
+					'–': '--',
+				};
+				const replacement_regex = new RegExp(Object
+				.keys(replacements)
+				// escape any regex literals found in the replacement keys:
+				.map(e => e.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+				.join('|')
+				, 'g');
+				return text.replace(replacement_regex, e => replacements[e]);
+		  }
+	  </script>
 	</body>
 </html>
