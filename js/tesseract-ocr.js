@@ -47,7 +47,23 @@ $( document ).ready(function() {
 		input.addEventListener( 'focus', function(){ input.classList.add( 'has-focus' ); });
 		input.addEventListener( 'blur', function(){ input.classList.remove( 'has-focus' ); });
 	});
+
+	Webcam.set({
+		width: 320,
+		height: 240,
+		image_format: 'jpeg',
+		jpeg_quality: 90
+	});
+	Webcam.attach('#my_camera');
 });
+
+function take_snapshot() {
+	Webcam.snap( function(data_uri) {
+		 document.getElementById('results').innerHTML = '<img src="'+data_uri+'" id="selected-image-camera"/>';
+		 var img = document.getElementById('selected-image-camera');
+		 startRecognize(img);
+	} );
+}
 
 $("#startLink").click(function () {
 	var img = document.getElementById('selected-image');
@@ -149,14 +165,14 @@ function recognizeFile(file){
 		console.log(array)
 		let sProv 	= 'PROVINSI';
 		let arrProv = array.filter(o => o.includes(sProv));
-		let resProv = arrProv.length > 0 ? arrProv[0] : "Provinsi not detected";
+		let resProv = arrProv.length > 0 ? arrProv[0] : "Provinsi -";
 
 		let sKab 	= 'KABUPATEN';
 		let arrKab = array.filter(o => o.includes(sKab));
-		let resKab = arrKab.length > 0 ? arrKab[0] : "KABUPATEN not detected";
+		let resKab = arrKab.length > 0 ? arrKab[0] : "KABUPATEN -";
 		let sKota 	= 'KOTA';
 		let arrKota = array.filter(o => o.includes(sKota));
-		let resKota = arrKota.length > 0 ? arrKota[0] : "KOTA not detected";
+		let resKota = arrKota.length > 0 ? arrKota[0] : "KOTA -";
 		let resKotaKab = resKota +""+ resKab;
 		if(arrKab.length > 0){
 			resKotaKab = resKab;
@@ -179,27 +195,25 @@ function recognizeFile(file){
 			}else if(arrJKTPUSAT.length > 0){
 				resKotaKab = 'JAKARTA PUSAT';
 			}else{
-				resKotaKab = 'Kota not detected';
+				resKotaKab = 'Kota -';
 			}
 		}
 
 		let sNik 	= 'NIK';
 		let arrNik = array.filter(o => o.includes(sNik));
-		let resNik = arrNik.length > 0 ? arrNik[0] : "NIK not detected";
+		let resNik = arrNik.length > 0 ? arrNik[0] : "NIK -";
 
 		let sNama 	= 'Nama';
 		let arrNama = array.filter(o => o.includes(sNama));
-		let resNama = arrNama.length > 0 ? arrNama[0] : "Nama not detected";
+		let resNama = arrNama.length > 0 ? arrNama[0] : "Nama -";
 
 		let sTtl 	= 'Tempat';
 		let arrTtl = array.filter(o => o.includes(sTtl));
-		let resTtl = arrTtl.length > 0 ? arrTtl[0] : "Tempat Tanggal/Lahir not detected";
+		let resTtl = arrTtl.length > 0 ? arrTtl[0] : "Tempat Tanggal/Lahir -";
 
-		let sJK 	= 'Kelamin';
-		let arrJK = array.filter(o => o.includes(sJK));
-		let arrWanita = arrJK.filter(o => o.includes('WANITA'));
-		let arrLaki = arrJK.filter(o => o.includes('LAKI-LAKI'));
-		let arrPerempuan = arrJK.filter(o => o.includes('PEREMPUAN'));
+		let arrWanita = array.filter(o => o.includes('WANITA'));
+		let arrLaki = array.filter(o => o.includes('LAKI-LAKI'));
+		let arrPerempuan = array.filter(o => o.includes('PEREMPUAN'));
 		if(arrWanita.length > 0){
 			resJK = 'WANITA';
 		}else if(arrLaki.length > 0){
@@ -207,40 +221,52 @@ function recognizeFile(file){
 		}else if(arrPerempuan.length > 0){
 			resJK = 'PEREMPUAN';
 		}else{
-			resJK = "Jenis Kelamin not detected";
+			resJK = "Jenis Kelamin -";
 		}
 
-		let sAlamat 	= 'Alamat';
-		let arrAlamat = array.filter(o => o.includes(sAlamat));
-		let resAlamat = arrAlamat.length > 0 ? arrAlamat[0] : "Alamat not detected";
+		let arrAlamat = array.filter(o => o.includes('Alamat'));
+		let arrAamat = array.filter(o => o.includes('Aamat'));
+		if(arrAlamat.length > 0){
+			resAlamat = arrAlamat[0];
+		}else if(arrAamat.length > 0){
+			resAlamat = arrAamat[0];
+		}else{
+			resAlamat = "Alamat -";
+		}
 
-		let sRTRW 	= 'RTRW';
-		let arrRTRW = array.filter(o => o.includes(sRTRW));
-		let resRTRW = arrRTRW.length > 0 ? arrRTRW[0] : "RT/RW not detected";
+		let arrRTRW = array.filter(o => o.includes('RTRW'));
+		let arrRIRW = array.filter(o => o.includes('RIRW'));
+		if(arrRTRW.length > 0){
+			resRTRW = arrRTRW[0];
+		}else if(arrRIRW.length > 0){
+			resRTRW = arrRIRW[0];
+		}else{
+			resRTRW = "RT/RW -";
+		}
 
 		let sDesa 	= 'KelDesa';
 		let arrDesa = array.filter(o => o.includes(sDesa));
-		let resDesa = arrDesa.length > 0 ? arrDesa[0] : "Desa not detected";
+		let resDesa = arrDesa.length > 0 ? arrDesa[0] : "Desa -";
 
 		let sKecamatan 	= 'Kecamatan';
 		let arrKecamatan = array.filter(o => o.includes(sKecamatan));
-		let resKecamatan = arrKecamatan.length > 0 ? arrKecamatan[0] : "Kecamatan not detected";
+		let resKecamatan = arrKecamatan.length > 0 ? arrKecamatan[0] : "Kecamatan -";
 
 		let sAgama 	= 'Agama';
 		let arrAgama = array.filter(o => o.includes(sAgama));
-		let resAgama = arrAgama.length > 0 ? arrAgama[0] : "Agama not detected";
+		let resAgama = arrAgama.length > 0 ? arrAgama[0] : "Agama -";
 
 		let sStatus 	= 'Status';
 		let arrStatus = array.filter(o => o.includes(sStatus));
-		let resStatus = arrStatus.length > 0 ? arrStatus[0] : "Status Kawin not detected";
+		let resStatus = arrStatus.length > 0 ? arrStatus[0] : "Status Kawin -";
 
 		let sPekerjaan 	= 'Pekerjaan';
 		let arrPekerjaan = array.filter(o => o.includes(sPekerjaan));
-		let resPekerjaan = arrPekerjaan.length > 0 ? arrPekerjaan[0] : "Pekerjaan not detected";
+		let resPekerjaan = arrPekerjaan.length > 0 ? arrPekerjaan[0] : "Pekerjaan -";
 
 		let sWNI 	= 'negara';
 		let arrWNI = array.filter(o => o.includes(sWNI));
-		let resWNI = arrWNI.length > 0 ? arrWNI[0] : "Kewarganegaraan not detected";
+		let resWNI = arrWNI.length > 0 ? arrWNI[0] : "Kewarganegaraan -";
 
 		console.log(resProv);
 		console.log(resKotaKab);
@@ -259,15 +285,36 @@ function recognizeFile(file){
 
 		let provinsi = replaceBulk( resProv, [":","-"], ['','']).trim().replace(/[0-9]/g, '');
 		let kotaKabupaten = replaceBulk( resKotaKab, [":","-"], ['','']).trim().replace(/[0-9]/g, '');
-		let nik = replaceBulk( resNik, [":","-",'NIK'], ['','','']).trim();
+		let nik = replaceBulk( resNik, [":","-",'NIK','b'], ['','','','6']).trim();
 		let nama = replaceBulk( resNama, [":","-",'Nama'], ['','','']).trim().replace(/[0-9]/g, '');
-		let ttl = replaceBulk( resTtl, [":",'Tempat/Tgl Lahir'], ['','']).trim();
+		let ttl = replaceBulk( resTtl, [":",'Tempat/Tgl Lahir','TempatTglLahir'], ['','','']).trim();
 		let jk = resJK
 		let alamat = replaceBulk( resAlamat, [":",'Alamat'], ['','']).trim();
 		let rtrw = "RT/RW " + replaceBulk( resRTRW, [":",'RT/RW','RT','RW'], ['','','','']).trim();
 		let desa = "Kel/Desa " +  replaceBulk( resDesa, [":",'Kel/Desa','Kel','Desa','KelDesa'], ['','','','','']).trim().replace(/[0-9]/g, '');
 		let kec = "Kec. " + replaceBulk( resKecamatan, [":",'Kecamatan'], ['','']).trim().replace(/[0-9]/g, '');
 		let agama = replaceBulk( resAgama, [":",'Agama'], ['','']).trim().replace(/[0-9]/g, '');
+		var splitAgama = agama.split(" ");
+		let islam = splitAgama.filter(o => o.includes("ISLAM"));
+		let kristen = splitAgama.filter(o => o.includes("KRISTEN"));
+		let katolik = splitAgama.filter(o => o.includes("KATOLIK"));
+		let hindu = splitAgama.filter(o => o.includes("HINDU"));
+		let budha = splitAgama.filter(o => o.includes("BUDHA"));
+		let konghucu = splitAgama.filter(o => o.includes("KONG"));
+		if(islam.length > 0){
+			agama = 'ISLAM';
+		}else if(kristen.length > 0){
+			agama = 'KRISTEN';
+		}else if(katolik.length > 0){
+			agama = 'KATOLIK';
+		}else if(hindu.length > 0){
+			agama = 'HINDU';
+		}else if(budha.length > 0){
+			agama = 'BUDHA';
+		}else if(konghucu.length > 0){
+			agama = 'KONGHUCHU';
+		}
+
 		let statusKawin = replaceBulk( resStatus, [":",'Status Perkawinan'], ['','']).trim().replace(/[0-9]/g, '');
 		let pekerjaan = replaceBulk( resPekerjaan, [":",'Pekerjaan','.'], ['','','']).trim().replace(/[0-9]/g, '');
 
@@ -284,7 +331,36 @@ function recognizeFile(file){
 		document.getElementById('agama').innerHTML = agama
 		document.getElementById('status').innerHTML = statusKawin
 		document.getElementById('pekerjaan').innerHTML = pekerjaan
-		progressUpdate({ status: 'done', data: data })
+
+		var form_data = new FormData();
+		var foto = $('#file-1').prop('files')[0];
+		form_data.append('foto', foto);
+		form_data.append('provinsi', provinsi);
+		form_data.append('kabupaten', kotaKabupaten);
+		form_data.append('nik', nik);
+		form_data.append('nama', nama);
+		form_data.append('ttl', ttl);
+		form_data.append('jk', jk);
+		form_data.append('alamat', alamat);
+		form_data.append('rtrw', rtrw);
+		form_data.append('desa', desa);
+		form_data.append('kec', kec);
+		form_data.append('agama', agama);
+		form_data.append('statuskawin', statusKawin);
+		form_data.append('pekerjaan', pekerjaan);
+		$.ajax({
+			url         : 'upload.php',
+			type        : 'post',
+			cache       : false,
+			contentType : false,
+			processData : false,
+			data        : form_data,
+			success     : function(response){
+				var res = JSON.parse(response)
+				progressUpdate({ status: 'done', data: data })
+			}
+		});
+
 	})
 }
 
@@ -293,10 +369,8 @@ function upload(){
 	btn.value = 'Loading ...';
 	btn.innerHTML = 'Loading ...';
 	btn.disabled = true;
-	var file_data = $('#image_name').prop('files')[0];
 	var link = $('#link').val();
 	var isvisit = $('#visitvirtual').val();
-	var form_data = new FormData();
 	form_data.append('foto', file_data);
 	form_data.append('unit_code', '');
 	form_data.append('link', link);
@@ -343,22 +417,6 @@ function upload(){
 
 
 	if($isPost){
-		$.ajax({
-			url         : './modules/handover/save_done_ho.php',
-			type        : 'post',
-			cache       : false,
-			contentType : false,
-			processData : false,
-			data        : form_data,
-			success     : function(response){
-				var res = JSON.parse(response)
-				console.log(res)
-				if(res){
-					sendMail();
-				}else{
-					showErrorDetail(res.remarks)
-				}
-			}
-		});
+		
 	}
 }
